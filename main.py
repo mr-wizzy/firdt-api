@@ -6,7 +6,7 @@ api = json.loads(my_api_request.content)
 
 print("----------------")
 print("----------------")
-#my dictionary that stores all my crpto assets.
+#my dictionary that stores all my crypto assets.
 crypto = [
   {
     "symbol":"BTC",
@@ -19,18 +19,18 @@ crypto = [
     "price_per_coin": 2.05
   }
 ]
-
-total_pl = 0
-
+#variable to store my total profits and loss. changes as the value gets added
+all_pro_los = 0
+#for loop for going through my first five assets and checking if it is contained in my dictionary of owned assets
 for assets in range(0, 5):
   for coin in crypto:
     if api["data"][assets]["symbol"] == coin["symbol"]:
       total_paid = coin["amount_owned"] * coin["price_per_coin"]
       current_value = coin["amount_owned"] * api["data"][assets]["quote"]["USD"]["price"]
       pl_percoin = api["data"][assets]["quote"]["USD"]["price"] - coin["price_per_coin"]
-      total_pl_coin = pl_percoin * coin["amount_owned"]
-      
-      total_pl = total_pl + total_pl_coin
+      all_pl_coin = pl_percoin * coin["amount_owned"]
+      #this gets my total profit and loss
+      all_pro_los = all_pro_los + all_pl_coin
 
       print(api["data"][assets]["name"] + " - " + api["data"][assets]["symbol"])
       print("Price - ${0:.2f}".format(api["data"][assets]["quote"]["USD"]["price"]))
@@ -38,7 +38,7 @@ for assets in range(0, 5):
       print("Total Amount Paid:", "${0:.2f}".format(total_paid))
       print("Current Value:", "${0:.2f}".format(current_value))
       print("P/L Per Coin:", "${0:.2f}".format(pl_percoin))
-      print("Total P/L With Coin:", "${0:.2f}".format(total_pl_coin))
+      print("Total P/L With Coin:", "${0:.2f}".format(all_pl_coin))
       print("----------------")
 
-print("Total P/L For Portfolio:", "${0:.2f}".format(total_pl))
+print("Total P/L For Portfolio:", "${0:.2f}".format(all_pro_los))
