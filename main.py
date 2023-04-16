@@ -1,7 +1,8 @@
 import requests 
 import json
-
-my_api_request = requests.get("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5&convert=USD&CMC_PRO_API_KEY=3889ce63-c733-403d-8b7d-c41a2438b4ea")
+#get gives us information from our database
+my_api_request = requests.get("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5&convert=NGN&CMC_PRO_API_KEY=3889ce63-c733-403d-8b7d-c41a2438b4ea")
+#using .load here helps us to convert json data to python strings and .content makes it to display on screen
 api = json.loads(my_api_request.content)
 
 print("----------------")
@@ -26,19 +27,21 @@ for assets in range(0, 5):
   for coin in crypto:
     if api["data"][assets]["symbol"] == coin["symbol"]:
       total_paid = coin["amount_owned"] * coin["price_per_coin"]
-      current_value = coin["amount_owned"] * api["data"][assets]["quote"]["USD"]["price"]
-      pl_percoin = api["data"][assets]["quote"]["USD"]["price"] - coin["price_per_coin"]
+      #calculation to get my current value of each coin
+      current_value = coin["amount_owned"] * api["data"][assets]["quote"]["NGN"]["price"]
+      #to get my profit and loss
+      pl_percoin = api["data"][assets]["quote"]["NGN"]["price"] - coin["price_per_coin"]
       all_pl_coin = pl_percoin * coin["amount_owned"]
       #this gets my total profit and loss
       all_pro_los = all_pro_los + all_pl_coin
 
       print(api["data"][assets]["name"] + " - " + api["data"][assets]["symbol"])
-      print("Price - ${0:.2f}".format(api["data"][assets]["quote"]["USD"]["price"]))
+      print("Price - N{0:.2f}".format(api["data"][assets]["quote"]["NGN"]["price"]))
       print("Number Of Coin:", coin["amount_owned"])
-      print("Total Amount Paid:", "${0:.2f}".format(total_paid))
-      print("Current Value:", "${0:.2f}".format(current_value))
-      print("P/L Per Coin:", "${0:.2f}".format(pl_percoin))
-      print("Total P/L With Coin:", "${0:.2f}".format(all_pl_coin))
+      print("Total Amount Paid:", "N{0:.2f}".format(total_paid))
+      print("Current Value:", "N{0:.2f}".format(current_value))
+      print("P/L Per Coin:", "N{0:.2f}".format(pl_percoin))
+      print("Total P/L With Coin:", "N{0:.2f}".format(all_pl_coin))
       print("----------------")
 
-print("Total P/L For Portfolio:", "${0:.2f}".format(all_pro_los))
+print("Total P/L For Portfolio:", "N{0:.2f}".format(all_pro_los))
